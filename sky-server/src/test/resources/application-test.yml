@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: ${TEST_DB_URL}
+    username: ${TEST_DB_USERNAME}
+    password: ${TEST_DB_PASSWORD}
+sky:
+  jwt:
+    secret: ${TEST_JWT_SECRET}
+  bootstrap:
+    enabled: false
+  oss:
+    enabled: false

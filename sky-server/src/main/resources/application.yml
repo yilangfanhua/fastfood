@@ -1,0 +1,46 @@
+debug: false
+logging:
+  level:
+    root: INFO
+server:
+  port: ${SERVER_PORT:8080}
+  tomcat:
+    # Consume rejected bodies up to the request limit so clients receive the JSON error.
+    max-swallow-size: 6MB
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 6MB
+  jackson:
+    time-zone: Asia/Shanghai
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+sky:
+  jwt:
+    secret: ${JWT_SECRET}
+    ttl: 2h
+  bootstrap:
+    enabled: ${ADMIN_BOOTSTRAP_ENABLED:false}
+    password: ${ADMIN_INITIAL_PASSWORD:}
+  oss:
+    enabled: ${OSS_ENABLED:false}
+    endpoint: ${OSS_ENDPOINT:}
+    bucket: ${OSS_BUCKET:}
+    access-key-id: ${OSS_ACCESS_KEY_ID:}
+    access-key-secret: ${OSS_ACCESS_KEY_SECRET:}
+    public-base-url: ${OSS_PUBLIC_BASE_URL:}
+springdoc:
+  api-docs:
+    enabled: ${API_DOCS_ENABLED:true}
+  swagger-ui:
+    enabled: ${API_DOCS_ENABLED:true}
+knife4j:
+  # Keep the UI; 4.5.0's enhancement code calls a removed springdoc 2.8 API.
+  enable: false

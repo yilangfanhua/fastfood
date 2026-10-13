@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sky.mapper.EmployeeMapper">
+  <select id="findByUsername" resultType="com.sky.entity.Employee">SELECT * FROM employee WHERE username=#{username}</select>
+  <select id="findById" resultType="com.sky.entity.Employee">SELECT * FROM employee WHERE id=#{id}</select>
+  <select id="findBootstrapAdmin" resultType="com.sky.entity.Employee">SELECT * FROM employee WHERE bootstrap_admin=TRUE LIMIT 1</select>
+  <insert id="insertBootstrap" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO employee(username,name,password,status,bootstrap_admin,create_time,update_time,create_user,update_user)
+    VALUES(#{username},#{name},#{password},1,TRUE,#{createTime},#{updateTime},#{createUser},#{updateUser})
+  </insert>
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO employee(username,name,password,phone,sex,id_number,status,create_time,update_time,create_user,update_user)
+    VALUES(#{username},#{name},#{password},#{phone},#{sex},#{idNumber},#{status},#{createTime},#{updateTime},#{createUser},#{updateUser})
+  </insert>
+  <update id="update">
+    UPDATE employee SET username=#{username},name=#{name},phone=#{phone},sex=#{sex},id_number=#{idNumber},
+    update_time=#{updateTime},update_user=#{updateUser} WHERE id=#{id}
+  </update>
+  <update id="updateStatus">
+    UPDATE employee SET status=#{status},update_time=#{updateTime},update_user=#{updateUser} WHERE id=#{id}
+  </update>
+  <sql id="nameFilter">
+    <where><if test="name != null and name != ''">name LIKE CONCAT('%',#{name},'%')</if></where>
+  </sql>
+  <select id="count" resultType="long">SELECT COUNT(*) FROM employee <include refid="nameFilter"/></select>
+  <select id="page" resultType="com.sky.entity.Employee">
+    SELECT id,username,name,phone,sex,id_number,status,create_time,update_time,create_user,update_user
+    FROM employee <include refid="nameFilter"/> ORDER BY id DESC LIMIT #{limit} OFFSET #{offset}
+  </select>
+  <delete id="deleteById">DELETE FROM employee WHERE id=#{id}</delete>
+</mapper>
